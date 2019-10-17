@@ -1,0 +1,6 @@
+# derived files from pdflatex
+*.aux
+*.log
+*.pdf
+*.bbl
+*.blg

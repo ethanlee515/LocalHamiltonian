@@ -1,4 +1,20 @@
 \documentclass{beamer}
+\usepackage{authblk}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{braket}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\newcommand{\sgn}{\operatorname{sgn}}
+\DeclareMathOperator*{\E}{\mathbb{E}}
+\DeclareMathOperator*{\spn}{\operatorname{span}}
+\DeclareMathOperator*{\poly}{\operatorname{poly}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\usepackage{etoolbox}
+\usepackage{hyperref}
+\newcommand{\algorithmautorefname}{Algorithm}
+\apptocmd{\thebibliography}{\raggedright}{}{}
+\usepackage{cite,color,float}
+
 \usetheme{Copenhagen}
 
 \title{Delegation of Quantum Computations}
@@ -18,6 +34,34 @@
 		\item Verifiability (TODO define)
 		\item Privacy (TODO define)
 		\item Long output: Not as trivial as it seems!
+	\end{itemize}
+}
+
+\frame{
+	\frametitle{BQNP (QMA)}
+	\begin{itemize}[<+->]
+		\item Quantum analogue of NP or MA (Merlin-Arthur)
+		\item Certificate can be quantum
+		\item {\color<+->{gray}{Verifier is a BQP machine}}
+		\item Verifier can store qubits and apply X/Z measurements.
+	\end{itemize}
+}
+
+\frame{
+	\frametitle{Local Hamiltonian}
+	\begin{itemize}
+		\item Is QMA-hard
+		\item Given
+			\begin{itemize}
+			\item $H=\sum_j H_j$, where $H_j$ is Hermitian and acts on at most $k$ qubits.
+			\item $a, b\in\mathbb{R}$ s.t. $b>a$ with at least inverse polynomial gap
+			\end{itemize}
+		\item Promise problem; decide which of the following is true
+			\begin{itemize}
+			\item $H$ has an eigenvalue not exceeding $a$
+			\item All eigenvalues of $H$ are greater than $b$
+			\end{itemize}
+		\item Generalization: $H_j\in\mathcal{G}_{XZ}=\set{U_0\otimes U_1\otimes\ldots\otimes U_n: U_i\in\set{I,X,Z}}$
 	\end{itemize}
 }
 

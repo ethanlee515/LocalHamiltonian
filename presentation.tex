@@ -95,15 +95,15 @@
 	\frametitle{Preliminaries}
 	\begin{itemize}
 		\item Hadamard and Toffoli with real states is universal
-		\item $H, T\in\spn\mathcal{G}_{XZ}$
+		\item Hadamard and Toffoli gates are in $\spn\mathcal{G}_{XZ}$
 	\end{itemize}
 }
 
 \frame{
 	\frametitle{Local Hamiltonian is QBP-hard}
-	Let $C=U_T\ldots U_1$ be a circuit where $U_i\in\set{H, T}$, and $\ket{x}$ be the initial state.
+	Let $C=U_T\ldots U_1$ be a circuit with only Hadamard and Toffoli gates. Let $\ket{x}$ be the initial state.
 	\pause
-	Construct $H$ so
+	Goal: construct $H$ so
 	$$\ket{\phi}=\sum_{t=0}^TU_t\ldots U_1\ket{x}\otimes\ket{\hat{t}}$$
 	has low eigenvalue, while everything perpendicular to it has high eigenvalue.
 }

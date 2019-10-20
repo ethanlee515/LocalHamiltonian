@@ -30,13 +30,13 @@
 \frame{
 	\frametitle{Settings}
 	\begin{itemize}[<+->]
-		\item BPP client, BQP server
-		\item Client has $C=U_n\ldots U_1$ and $x$, wants to compute $C\ket{x}$
-		\item Possible goals are the following:
+		\item Classical client, quantum server
+		\item Client has circuit $C=U_n\ldots U_1$ and input $x$, wants to compute and measure $C(\ket{x})$ by interacting with the server
+		\item Nice properties to have:
 		\begin{itemize}
 			\item \color<7->{red}{Verifiability}
 			\item Privacy
-			\item Long output: Not as trivial as it seems!
+			\item Long output
 		\end{itemize}
 	\end{itemize}
 }
@@ -44,18 +44,18 @@
 \frame{
 	\frametitle{BQNP (QMA)}
 	\begin{itemize}[<+->]
-		\item Quantum analogue of NP or MA (Merlin-Arthur)
-		\item Amplification can be done but is nontrivial.
+		\item Quantum analogue of NP or MA
 		\item Certificate can be quantum
 		\item {\color<+->{gray}{Verifier is a BQP machine}}
 		\item Verifier can store qubits and apply X/Z measurements.
+		\item Amplification can be done. (This isn't trivial.)
 	\end{itemize}
 }
 
 \frame{
 	\frametitle{Local Hamiltonian}
 	\begin{itemize}[<+->]
-		\item Is QMA-complete
+		\item A QMA-complete problem
 		\item Given the following input:
 			\begin{itemize}
 				\item $\set{H_j}$ each Hermitian and acts on at most $k$ qubits.
@@ -70,20 +70,21 @@
 	\end{itemize}
 }
 \frame{
-	\frametitle{Local Hamiltonian is in QMA}
-	Goal: Estimate
+	\frametitle{$\mathcal{G}_{XZ}$ Local Hamiltonian is in QMA}
+	Goal: Given certificate $\phi$, estimate
 	$$\braket{\phi|H|\phi}=\sum_{S\in\mathcal{G}_{XZ}}d_S S$$
+
 	\begin{align*}
-		\onslide<2->{\frac{1}{\sum_{S\in\mathcal{G}_{XZ}}\abs{d_S}}\braket{\phi|H|\phi}&
-			=\sum_{S\in\mathcal{G}_{XZ}} p_S\sgn(d_S)\braket{\phi|S|\phi}\\}
-		\onslide<3->{&=\sum_{S\in\mathcal{G}_{XZ}} p_S\sgn(d_S)\E[\lambda_S]\\}
-		\onslide<4->{&=\E_S[\sgn(d_S)\E[\lambda_S]]\\}
-		\onslide<5->{&=\E_S[\sgn(d_S)\lambda_S]}
+		\onslide<2->{\frac{1}{\sum\abs{d_S}}\braket{\phi|H|\phi}&}
+			\onslide<3->{=\sum_{S\in\mathcal{G}_{XZ}} p_S\sgn(d_S)\braket{\phi|S|\phi}\\}
+		\onslide<4->{&=\sum_{S\in\mathcal{G}_{XZ}} p_S\sgn(d_S)\E[\lambda_S]\\}
+		\onslide<5->{&=\E_S[\sgn(d_S)\E[\lambda_S]]\\}
+		\onslide<6->{&=\E_S[\sgn(d_S)\lambda_S]}
 	\end{align*}
 }
 
 \frame{
-	\frametitle{Local Hamiltonian is in QMA cont.}
+	\frametitle{$\mathcal{G}_{XZ}$ Local Hamiltonian is in QMA cont.}
 	Let $p=P[\sgn(d_S)\lambda_S=-1]$
 	\pause
 	$$\Rightarrow \frac{1}{D}\braket{\phi|H|\phi}=\E_S[\sgn(d_S)\lambda_S]=-p+(1-p)$$
@@ -92,35 +93,37 @@
 }
 
 \frame{
-	\frametitle{Preliminaries}
+	\frametitle{Preliminary facts}
+	Hadamard and Toffoli gates are:
 	\begin{itemize}
-		\item Hadamard and Toffoli with real states is universal
-		\item Hadamard and Toffoli gates are in $\spn\mathcal{G}_{XZ}$
+		\item universal (with real states)
+		\item in $\spn\mathcal{G}_{XZ}$
 	\end{itemize}
 }
 
 \frame{
-	\frametitle{Local Hamiltonian is QBP-hard}
-	Let $C=U_T\ldots U_1$ be a circuit with only Hadamard and Toffoli gates. Let $\ket{x}$ be the initial state.
+	\frametitle{Local Hamiltonian is BQP-hard}
+	Let $C=U_T\ldots U_1$ be a circuit using only Hadamard and Toffoli gates. Let $\ket{x}$ be the initial state.
+
 	\pause
-	Goal: construct $H$ so
+	Goal: construct $H$ such that
 	$$\ket{\phi}=\sum_{t=0}^TU_t\ldots U_1\ket{x}\otimes\ket{\hat{t}}$$
-	has low eigenvalue, while everything perpendicular to it has high eigenvalue.
+	is low energy on a yes-instance.
 }
 
 \frame{
 	\frametitle{Checking for valid outputs}
 	$$H_{out}=(I-\ket{1}\bra{1}_0)\otimes\ket{\hat{T}}\bra{\hat{T}}$$
 	\pause
-	$$H_{out}\in\spn\mathcal{G}_{XZ}$$
-	$$H_{out}=\left(\frac{1}{2}(I-Z_1)\right)\otimes\left(\frac{1}{2}(1+Z_T)\right)$$
+	$$=\left(\frac{1}{2}(I-Z_1)\right)\otimes\left(\frac{1}{2}(1+Z_T)\right)\in\spn\mathcal{G}_{XZ}$$
 }
 
 \frame{
 	\frametitle{Checking for valid inputs}
 	$$H_{in}=\sum_{i=1}^n(I-\ket{x_i}\bra{x_i})\otimes\ket{0}\bra{0}_1$$
 	\pause
-	$$=\sum_{i=1}^n\left(\frac{1}{2}I-(-1)^{x_i}Z_i\right)\otimes\left(\frac{1}{2}(I+Z_1)\right)$$
+	$$=\sum_{i=1}^n\left(\frac{1}{2}I-(-1)^{x_i}Z_i\right)\otimes\left(\frac{1}{2}(I+Z_1)\right)
+		\in\spn\mathcal{G}_{XZ}$$
 }
 
 \frame{
@@ -150,6 +153,7 @@
 	+I\otimes\ket{\widehat{t-1}}\bra{\widehat{t-1}}
 	-U_t\otimes\ket{\widehat{t}}\bra{\widehat{t-1}}
 	-U_t^\dagger\otimes\ket{\widehat{t-1}}\bra{\widehat{t}}$$
+	\pause
 	$$=\frac{I}{4}\otimes(I-Z_{t-1})(I+Z_{t+1})-\frac{U_t}{4}\otimes(I-Z_{t-1})X_t(I+Z_{t+1})$$
 	\pause
 	$$H_{prop,1}=\frac{1}{2}(I+Z_2)-U_1\otimes\frac{1}{2}(X_1+X_1Z_2)$$
@@ -157,48 +161,73 @@
 }
 
 \frame{
-	\frametitle{Projection Lemma}
-	Let $H_1, H_2$ be Hamiltonians where $H_2\geq0$, and $S=\ker H_2$.
-	Then $\exists J\in\mathbb{R}$ s.t.
-	$\lambda(H_1\big|_S)-\frac{1}{8}\leq
-		\lambda(H_1+JH_2)\leq\lambda(H_1\big|_S)$.
+	\frametitle{Analysis of $H_{prop}$}
+	By induction,
+	$$\Rightarrow K_{clock}\cap K_{prop}=\set{\sum_{t=0}^TU_t\ldots U_1\ket{y}\otimes\ket{\hat{t}}: \ket{y}\in\mathcal{B}^{\otimes n}}$$
+
 	\pause
-	\begin{block}{idea}
-		Construct $H_2$ to ``cut out" vectors outside $\ker H_2$
-	\end{block}
+	Claim: $$H_{prop}\geq0$$
 }
 
 \frame{
-	\frametitle{Analysis of the above}
-	We get
-	$$H=H_{out}+J_{in}H_{in}+J_{prop}H_{prop}+J_{clock}H_{clock}$$
-	by applying the projection lemma iteratively.
+	\frametitle{$H_{prop}\geq0$}
 
-	Then we have $\lambda(H)\geq\lambda(H\big|_K)-\frac{3}{8}$
+	Consider the change of coordinates
+	$$W=\sum_{j=0}^L U_j\ldots U_1\otimes\ket{j}\bra{j}$$
+	\pause
+	$$\Rightarrow W^\dagger\ket{\phi}=\sum_{t=0}^T\ket{x}\otimes\ket{\hat{t}}$$
+	\pause
+	$$\Rightarrow W^\dagger H_{prop,t}W=I\otimes\left(\ket{\widehat{t}}\bra{\widehat{t}}
+	+\ket{\widehat{t-1}}\bra{\widehat{t-1}}
+	-\ket{\widehat{t}}\bra{\widehat{t-1}}
+	-\ket{\widehat{t-1}}\bra{\widehat{t}}\right)$$
+}
 
+\frame{
+	\frametitle{Analysis of $H_{prop}$ cont.}
+	$$\Rightarrow W^\dagger H_{prop,t}W=I\otimes\left(\ket{\widehat{t}}\bra{\widehat{t}}
+	+\ket{\widehat{t-1}}\bra{\widehat{t-1}}
+	-\ket{\widehat{t}}\bra{\widehat{t-1}}
+	-\ket{\widehat{t-1}}\bra{\widehat{t}}\right)$$
+	\pause
+	$$\Rightarrow W^\dagger H_{prop}W=2
+	\begin{pmatrix}
+		\frac{1}{2} & -\frac{1}{2} & & & &  \\
+		-\frac{1}{2} & 1 & -\frac{1}{2} & & & \\
+		& -\frac{1}{2} & 1 & \ddots & & \\
+		& & \ddots & \ddots & -\frac{1}{2} & \\
+		& & & -\frac{1}{2} & 1 & -\frac{1}{2} \\
+		& & & & -\frac{1}{2} & \frac{1}{2}
+	\end{pmatrix}$$
+	\pause
+	$\Rightarrow \lambda(W^\dagger H_{prop}W)=0$;
 	
-	TODO Prove the above Hamiltonians are in fact psd and have lower bound on eigenvalue?
+	$\lambda_2(W^\dagger H_{prop}W)$ is inverse polynomially bounded away from 0
 }
 
 \frame{
-	\frametitle{Conclusion}
-	By the projection lemma,
-	$$\lambda(H_{out}\big|_{S_{in}}-\frac{4}{8})\leq
-	\lambda(H)\leq\lambda(H_{out}\big|_{S_{in}})$$
-	\pause
-	\begin{itemize}[<+->]
-	\item If the circuit rejects with probability less than $\varepsilon$,
-	then $\lambda(H)<\varepsilon$.
-	\item Otherwise the circuit should reject with probability
-	greater than $1-\varepsilon$. Which means
-	$\lambda(H)>1-\varepsilon-\frac{4}{8}=\frac{1}{2}-\varepsilon$.
-	\item So 2-local Hamiltonian is QMA-hard.
-	\end{itemize}
+	\frametitle{Projection Lemma}
+	Let $H_1, H_2$ be local Hamiltonians where $H_2\geq0$. Let $K=\ker H_2$.
+	$$\exists J=\frac{\poly(\norm{H_1})}{\lambda_2(H_2)}$$
+	$$\lambda(H_1\big|_K)-\frac{1}{8}\leq\lambda(H_1+JH_2)\leq\lambda(H_1\big|_K)$$
+}
+
+\frame{
+	\frametitle{Use of projection lemma}
+	By applying the projection lemma iteratively,
+	$$\lambda(H_{out}\big|_K)-\frac{3}{8}
+		\leq\lambda(H_{out}+J_{in}H_{in}+J_{clock}H_{clock}+J_{prop}H_{prop})\leq
+		\lambda(H_{out}\big|_K)$$
+	where $K=\spn\set{\sum_{t=0}^TU_t\ldots U_1\ket{x}\otimes\ket{\hat{t}}}$
+
+	\qed
 }
 
 \iffalse
 \frame{
 	\frametitle{General case: Local Hamiltonian is in QMA}
+	Goal: Estimate $\braket{\phi|H|\phi}$ for Hermitian $H$.
+
 
 }
 \fi
